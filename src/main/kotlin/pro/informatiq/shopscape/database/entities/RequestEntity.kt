@@ -1,4 +1,4 @@
-package pro.informatiq.shopscape.Database.Entities
+package pro.informatiq.shopscape.database.entities
 
 import jakarta.persistence.*
 import pro.informatiq.shopscape.data.Request

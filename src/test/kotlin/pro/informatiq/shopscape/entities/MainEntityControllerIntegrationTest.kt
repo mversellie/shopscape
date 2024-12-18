@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.transaction.annotation.Transactional
 import kotlin.test.assertNotNull
-import pro.informatiq.shopscape.Database.Entities.MainEntity
+import pro.informatiq.shopscape.database.entities.MainEntity
 
 @SpringBootTest
 @AutoConfigureMockMvc

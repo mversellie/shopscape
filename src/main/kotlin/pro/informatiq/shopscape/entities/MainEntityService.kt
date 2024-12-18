@@ -1,7 +1,7 @@
 package pro.informatiq.shopscape.entities
 
 import org.springframework.stereotype.Service
-import pro.informatiq.shopscape.Database.Entities.MainEntity
+import pro.informatiq.shopscape.database.entities.MainEntity
 import pro.informatiq.shopscape.database.repositories.MainEntityRepository
 import java.util.*
 @Service

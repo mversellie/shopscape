@@ -1,5 +1,5 @@
 package pro.informatiq.shopscape.data
-import pro.informatiq.shopscape.Database.Entities.StoreEntity
+import pro.informatiq.shopscape.database.entities.StoreEntity
 import java.util.*
 data class Store(
     var idIn: UUID,

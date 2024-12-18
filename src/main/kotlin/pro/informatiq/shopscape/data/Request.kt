@@ -1,6 +1,6 @@
 package pro.informatiq.shopscape.data
 
-import pro.informatiq.shopscape.Database.Entities.RequestEntity
+import pro.informatiq.shopscape.database.entities.RequestEntity
 import java.util.*
 
 data class Request(

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
-import pro.informatiq.shopscape.Database.Entities.MainEntity
+import pro.informatiq.shopscape.database.entities.MainEntity
 import java.util.*
 @Repository
 interface MainEntityRepository : JpaRepository<MainEntity, UUID> {

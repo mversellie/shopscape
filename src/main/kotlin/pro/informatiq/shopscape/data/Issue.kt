@@ -1,6 +1,6 @@
 package pro.informatiq.shopscape.data
 
-import pro.informatiq.shopscape.Database.Entities.IssueEntity
+import pro.informatiq.shopscape.database.entities.IssueEntity
 import java.util.*
 
 data class Issue(
