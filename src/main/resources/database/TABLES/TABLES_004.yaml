@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-entity-type-id-to-entities
+      author: Marco
+      changes:
+        - addColumn:
+            tableName: entities
+            columnName: entity_type_id
+            type: INT
+        - addForeignKeyConstraint:
+            baseTableName: entities
+            constraintName: FK_entities_entity_type
+            baseColumnNames: entity_type_id
+            referencedTableName: entity_type
+            referencedColumnNames: id

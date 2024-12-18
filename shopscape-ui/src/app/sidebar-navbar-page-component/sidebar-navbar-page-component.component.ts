@@ -18,8 +18,7 @@ import {NgClass} from '@angular/common';
 })
 export class SidebarNavbarPageComponentComponent {
 
-  @ViewChild('sidebarComp')
-    // @ts-ignore
+  @ViewChild('sidebarComp')// @ts-ignore
   sideBar: SideBarComponent
   isSideBarOpen = false;
 
@@ -27,7 +26,5 @@ export class SidebarNavbarPageComponentComponent {
     this.isSideBarOpen = openStatus
   }
 
-
   protected readonly window = window;
-  protected readonly Event = Event;
 }

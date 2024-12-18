@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-stores-table
+      author: marco (generated)
+      changes:
+        - createTable:
+            tableName: stores
+            columns:
+              - column:
+                  name: street_address
+                  type: VARCHAR(255)
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: state
+                  type: VARCHAR(255)
+              - column:
+                  name: zip_code
+                  type: VARCHAR(10)
+              - column:
+                  name: phone_number
+                  type: VARCHAR(20)
+              - column:
+                  primaryKey: true
+                  name: entity_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKey:
+                      tableName: entities
+                      columnName: id
+  - changeSet:
+      id: create-equipment-table
+      author: Bard
+      changes:
+        - createTable:
+            tableName: equipment
+            columns:
+              - column:
+                  name: serial_number
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: model_number
+                  type: VARCHAR(255)
+              - column:
+                  name: entity_id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: true
+                    foreignKey:
+                      tableName: entities
+                      columnName: id

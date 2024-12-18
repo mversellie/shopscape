@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-foreign-keys
+      author: Marco (Generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: equipment_relationships
+            constraintName: FK_equipment_relationships_entities
+            baseColumnNames: equipment_id
+            referencedTableName: entities
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: equipment_relationships
+            constraintName: FK_equipment_relationships_entities_2
+            baseColumnNames: store_id
+            referencedTableName: entities
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: issues
+            constraintName: FK_issues_entities
+            baseColumnNames: entity_id
+            referencedTableName: entities
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: requests
+            constraintName: FK_requests_entities
+            baseColumnNames: entity_id
+            referencedTableName: entities
+            referencedColumnNames: id

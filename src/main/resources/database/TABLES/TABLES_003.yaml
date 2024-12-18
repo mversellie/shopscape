@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-entity-type-table
+      author: Marco
+      changes:
+        - createTable:
+            tableName: entity_type
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)

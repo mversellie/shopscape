@@ -1,0 +1,13 @@
+services:
+  postgres_shop_scape:
+    image: postgres:16
+    volumes:
+      - postgres_shop_scape:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${SHOP_SCAPE_DB_NAME}
+      POSTGRES_USER: ${SHOP_SCAPE_DB_USERNAME}
+      POSTGRES_PASSWORD: ${SHOP_SCAPE_DB_USERNAME}
+    ports:
+      - "59382:5432"
+volumes:
+  postgres_shop_scape:

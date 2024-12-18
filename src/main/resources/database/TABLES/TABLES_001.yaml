@@ -1,0 +1,100 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-entities-table
+      author: Marco(Generated)
+      changes:
+        - createTable:
+            tableName: entities
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+  - changeSet:
+      id: create-equipment-relationships-table
+      author: Marco(Generated)
+      changes:
+        - createTable:
+            tableName: equipment_relationships
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: true
+              - column:
+                  name: equipment_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKey:
+                      tableName: entities
+                      columnName: id
+              - column:
+                  name: store_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKey:
+                      tableName: entities
+                      columnName: id
+  - changeSet:
+      id: create-issues-table
+      author: Marco(Generated)
+      changes:
+        - createTable:
+            tableName: issues
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: entity_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKey:
+                      tableName: entities
+                      columnName: id
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: TEXT
+  - changeSet:
+      id: create-requests-table
+      author: Marco(Generated)
+      changes:
+        - createTable:
+            tableName: requests
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: entity_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKey:
+                      tableName: entities
+                      columnName: id
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: TEXT
