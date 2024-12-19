@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*
 import pro.informatiq.shopscape.data.Equipment
 import pro.informatiq.shopscape.data.EquipmentRelationshipRequest
 import java.util.*
-@RestController()
+@RestController
 @RequestMapping("/api/equipment")
 class EquipmentController(val equipmentService: EquipmentService) {
     @PostMapping("")

@@ -64,23 +64,11 @@ class EquipmentControllerIntegrationTest {
  @Test
  fun `should add equipment to store and persist relationship`() {
   // Create a new store
-  val newStore = pro.informatiq.shopscape.database.entities.StoreEntity(
-   entityId = UUID.randomUUID(),
-   streetAddress = "123 Main St",
-   city = "Anytown",
-   state = "CA",
-   zipCode = "90210",
-   phoneNumber = "555-123-4567"
-  )
+  val newStore = makeATempStore()
   storeRepository.save(newStore)
 
   // Create new equipment
-  val newEquipment = EquipmentEntity(
-   entityId = UUID.randomUUID(),
-   serialNumber = "SN123",
-   description = "Test Equipment",
-   modelNumber = "Model XYZ"
-  )
+  val newEquipment = makeTestEquipmentEntity()
   equipmentRepository.save(newEquipment)
 
   // Create relationship request
@@ -103,23 +91,11 @@ class EquipmentControllerIntegrationTest {
 
  @Test
  fun `should create equipment and retrieve it for a store`() {
-  val newStore = pro.informatiq.shopscape.database.entities.StoreEntity(
-   entityId = UUID.randomUUID(),
-   streetAddress = "123 Main St",
-   city = "Anytown",
-   state = "CA",
-   zipCode = "90210",
-   phoneNumber = "555-123-4567"
-  )
+  val newStore = makeATempStore()
   storeRepository.save(newStore)
 
   // Create new equipment
-  val newEquipment = EquipmentEntity(
-   entityId = UUID.randomUUID(),
-   serialNumber = "SN123",
-   description = "Test Equipment",
-   modelNumber = "Model XYZ"
-  )
+  val newEquipment = makeTestEquipmentEntity()
   equipmentRepository.save(newEquipment)
 
 
@@ -135,6 +111,25 @@ class EquipmentControllerIntegrationTest {
     MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(listOf(newEquipment.toEquipmentPojo())))
    }
  }
+
+ fun makeATempStore() : StoreEntity {
+  return StoreEntity(
+   entityId = UUID.randomUUID(),
+   streetAddress = "123 Main St",
+   city = "Anytown",
+   state = "CA",
+   zipCode = "90210",
+   phoneNumber = "555-123-4567"
+  )
+ }
+
+ fun makeTestEquipmentEntity(): EquipmentEntity{
+  return EquipmentEntity(
+  entityId = UUID.randomUUID(),
+  serialNumber = "SN123",
+  description = "Test Equipment",
+  modelNumber = "Model XYZ"
+  )}
 
 
 }

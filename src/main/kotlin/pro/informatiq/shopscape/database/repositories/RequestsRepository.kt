@@ -7,7 +7,7 @@ import pro.informatiq.shopscape.database.entities.RequestEntity
 import java.util.*
 
 @Repository
-public interface RequestsRepository : JpaRepository<RequestEntity, UUID> {
+interface RequestsRepository : JpaRepository<RequestEntity, UUID> {
     @Query(
             value = "SELECT e.id AS entityId, e.name AS entityName, s.street_address, s.city, s.state, s.zip_code, s.phone_number, r.id AS requestId, r.name AS requestName, r.description AS requestDescription " +
                     "FROM entities e " +
