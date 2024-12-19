@@ -20,7 +20,7 @@ import pro.informatiq.shopscape.database.entities.MainEntity
 @AutoConfigureMockMvc
 @Transactional
 @Rollback
-class MainEntityControllerIT {
+class MainEntityControllerIntegrationTest {
  @Autowired
  private lateinit var mockMvc: MockMvc
  @PersistenceContext

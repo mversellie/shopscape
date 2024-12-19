@@ -7,4 +7,5 @@ import java.util.*
 
 @Repository
 interface EquipmentRelationshipRepository : JpaRepository<EquipmentRelationshipEntity, UUID> {
+    fun findByEquipmentAndStore(equipment: UUID, store: UUID): EquipmentRelationshipEntity?
 }

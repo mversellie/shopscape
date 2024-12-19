@@ -11,7 +11,7 @@ import java.util.*
 data class EquipmentRelationshipEntity (
     @Id
     @Column(name = "id", nullable = false)
-    var id: UUID,
+    var id: UUID = UUID.randomUUID(),
 
     @Column(name = "equipment_id")
     var equipment: UUID,

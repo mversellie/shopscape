@@ -8,4 +8,5 @@ import java.util.*
 
 @Repository
 interface StoreRepository : JpaRepository<StoreEntity, UUID> {
+    fun findByStreetAddress(streetAddress: String): StoreEntity?
 }
