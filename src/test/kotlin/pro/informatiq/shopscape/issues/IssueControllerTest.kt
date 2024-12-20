@@ -35,4 +35,19 @@ class IssueControllerTest {
   assertNotNull(body)
   assertEquals(1, (body as Map<String, List<IssueService.StoreIssueSummary>>)["shops"]?.size)
  }
+
+ @Test
+ fun `getTotalIssues should return Ok with the correct count`() {
+  // Given
+  val expectedCount = 15L
+  every { issueService.getTotalIssueCount() } returns expectedCount
+
+  // When
+  val response = issueController.getTotalIssues()
+
+  // Then
+  assertEquals(HttpStatus.OK, response.statusCode)
+  assertEquals(expectedCount, response.body?.get("count"))
+ }
+
 }

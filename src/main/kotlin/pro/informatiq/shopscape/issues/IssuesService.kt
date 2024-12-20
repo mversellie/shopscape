@@ -31,4 +31,7 @@ class IssueService(val issueRepository: IssueRepository) {
             )
         }
     }
+    fun getTotalIssueCount(): Long {
+        return issueRepository.count()
+    }
 }

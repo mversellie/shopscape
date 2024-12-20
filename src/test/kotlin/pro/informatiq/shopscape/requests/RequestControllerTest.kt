@@ -47,4 +47,19 @@ class RequestControllerTest {
   assertEquals(5, firstShop.requestCount)
   assertEquals(2, firstShop.equipmentRequestCount)
  }
+
+ @Test
+ fun `getTotalRequests should return Ok with the correct count`() {
+  // Given
+  val expectedCount = 20L
+  every { requestService.getTotalRequestCount() } returns expectedCount
+
+  // When
+  val response = requestController.getTotalRequests()
+
+  // Then
+  assertEquals(HttpStatus.OK, response.statusCode)
+  assertEquals(expectedCount, response.body?.get("count"))
+ }
+
 }

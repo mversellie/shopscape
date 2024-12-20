@@ -43,4 +43,18 @@ class RequestServiceTest {
   assertEquals(5L, summary.requestCount)
   assertEquals(2L, summary.equipmentRequestCount)
  }
+
+ @Test
+ fun `getTotalRequestCount should return the correct count`() {
+  // Given
+  val expectedCount = 5L
+  every { requestRepository.count() } returns expectedCount
+
+  // When
+  val actualCount = requestService.getTotalRequestCount()
+
+  // Then
+  assertEquals(expectedCount, actualCount)
+ }
+
 }

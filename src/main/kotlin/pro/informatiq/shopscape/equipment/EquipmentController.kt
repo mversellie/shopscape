@@ -9,7 +9,7 @@ import java.util.*
 @RestController
 @RequestMapping("/api/equipment")
 class EquipmentController(val equipmentService: EquipmentService) {
-    @PostMapping("")
+    @PostMapping
     fun createEquipment(@RequestBody equipment: Equipment): ResponseEntity<Equipment> {
         val entityId = UUID.randomUUID()
         equipmentService.createEquipment(

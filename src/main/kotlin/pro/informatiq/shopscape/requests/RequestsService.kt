@@ -31,4 +31,8 @@ class RequestService(val requestRepository: RequestsRepository) {
             )
         }
     }
+
+    fun getTotalRequestCount(): Long {
+        return requestRepository.count()
+    }
 }

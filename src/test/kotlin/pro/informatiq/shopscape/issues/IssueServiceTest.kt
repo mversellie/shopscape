@@ -43,4 +43,19 @@ class IssueServiceTest {
   assertEquals(5L, summary.issueCount)
   assertEquals(2L, summary.equipmentIssueCount)
  }
+
+ @Test
+ fun `getTotalIssueCount should return the correct count`() {
+  // Given
+  val expectedCount = 10L
+  every { issueRepository.count() } returns expectedCount
+
+  // When
+  val actualCount = issueService.getTotalIssueCount()
+
+  // Then
+  assertEquals(expectedCount, actualCount)
+ }
+
+
 }
