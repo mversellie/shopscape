@@ -1,0 +1,16 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let issue of issues">
+    <td>{{ issue.name }}</td>
+    <td>{{ issue.description }}</td>
+    <td>{{ issue.status }}</td>
+  </tr>
+  </tbody>
+</table>

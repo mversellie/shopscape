@@ -10,7 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pro.informatiq.shopscape.database.entities.*
 import pro.informatiq.shopscape.database.repositories.*
 import pro.informatiq.shopscape.equipment.EquipmentService
@@ -46,9 +47,11 @@ class RequestControllerIntegrationTest {
     private lateinit var equipmentId: UUID
     private lateinit var storeID: UUID
     private lateinit var entityId: UUID
+    private var before:Long = 0
 
     @BeforeEach
     fun setUp() {
+        before = requestsRepository.count()
         equipmentId = UUID.randomUUID()
         storeID = UUID.randomUUID()
         entityId = UUID.randomUUID()
@@ -122,9 +125,54 @@ class RequestControllerIntegrationTest {
      */
     @Test
     fun `getTotalRequests should return the correct count`() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/total-requests")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/requests/total-requests")
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(mapOf("count" to 2L))))
+            .andExpect(status().isOk)
+            .andExpect(content().json(objectMapper.writeValueAsString(mapOf("count" to (2L + before)))))
+    }
+
+    @Test
+    fun `getAllRequests should return requests data after saving to db`() {
+        val requestEntity1 = RequestEntity(
+            id = UUID.randomUUID(),
+            entityId = UUID.randomUUID(),
+            name = "Request 1",
+            status = 1,
+            description = "Some description"
+        )
+        val requestEntity2 = RequestEntity(
+            id = UUID.randomUUID(),
+            entityId = UUID.randomUUID(),
+            name = "Request 2",
+            status = 3,
+            description = "Another description"
+        )
+
+        requestsRepository.save(requestEntity1)
+        requestsRepository.save(requestEntity2)
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/requests")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk)
+            .andExpect(content().json("""
+                {
+                  "requests": [
+                    {
+                      "id": "${requestEntity1.id}",
+                      "entityId": "${requestEntity1.entityId}",
+                      "name": "Request 1",
+                      "status": "Pending",
+                      "description": "Some description"
+                    },
+                    {
+                      "id": "${requestEntity2.id}",
+                      "entityId": "${requestEntity2.entityId}",
+                      "name": "Request 2",
+                      "status": "Completed",
+                      "description": "Another description"
+                    }
+                  ]
+                }
+            """))
     }
 }

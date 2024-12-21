@@ -13,13 +13,13 @@ class EquipmentController(val equipmentService: EquipmentService) {
     fun createEquipment(@RequestBody equipment: Equipment): ResponseEntity<Equipment> {
         val entityId = UUID.randomUUID()
         equipmentService.createEquipment(
-            name = equipment.nameIn,
+            name = equipment.name,
             description = equipment.description ?: "",
             modelNumber = equipment.modelNumber ?: "",
             serialNumber = equipment.serialNumber ?: "",
             entityId = entityId
         )
-        return ResponseEntity.status(HttpStatus.CREATED).body(equipment.copy(idIn = entityId))
+        return ResponseEntity.status(HttpStatus.CREATED).body(equipment.copy(id = entityId))
     }
 
     @PutMapping("/relationships")

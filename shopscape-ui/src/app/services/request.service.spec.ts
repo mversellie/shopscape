@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { RequestService } from './request.service';
 import { NetworkService } from './network.service';
+import {ShopScapeRequest} from '../data/ShopScapeRequest';
 
 describe('RequestService', () => {
   let service: RequestService;
@@ -31,4 +32,25 @@ describe('RequestService', () => {
     expect(result).toEqual(mockResponse);
     expect(networkService.get).toHaveBeenCalledWith('/api/requests/total-requests');
   });
+
+  it('should get all requests', async () => {
+    // @ts-ignore
+    const mockRequests: ShopScapeRequest[] =
+
+      [
+        // @ts-ignore
+        { id: '1', name: 'Request 1', description: 'Desc 1', entityId: '123', status: 'Pending' },
+        // @ts-ignore
+        { id: '2', name: 'Request 2', description: 'Desc 2', entityId: '456', status: 'Completed' }
+    ];
+
+    // @ts-ignore
+    spyOn(networkService, 'get').and.returnValue(Promise.resolve({ ok: true, json: () => ({ requests: mockRequests }) }));
+
+    const result = await service.getAllRequests();
+
+    expect(result).toEqual(mockRequests);
+    expect(networkService.get).toHaveBeenCalledWith('/api/requests');
+  });
+
 });

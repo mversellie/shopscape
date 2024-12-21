@@ -43,10 +43,12 @@ class IssueControllerIntegrationTest {
     private lateinit var equipmentId: UUID
     private lateinit var storeID: UUID
     private lateinit var entityId: UUID
+    private var before:Long = 0
 
 
-        @BeforeEach
+    @BeforeEach
     fun setUp() {
+            before = issuesRepository.count()
             equipmentId = UUID.randomUUID()
             storeID = UUID.randomUUID()
             entityId = UUID.randomUUID()
@@ -111,6 +113,6 @@ class IssueControllerIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/issues/total-issues")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(mapOf("count" to 2L))))
+            .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(mapOf("count" to (2L + before)))))
     }
 }

@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: make-type-requests-issues-tables
+      author: Marco
+      changes:
+        - createTable:
+            tableName: issues_types
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    foreignKey:
+                      tableName: issues_types
+                      columnName: id
+        - createTable:
+            tableName: requests_types
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: add-types-requests-issues
+      author: Marco
+      changes:
+        - addColumn:
+            tableName: requests
+            columnName: status
+            type: INT
+            constraints:
+              nullable: false
+              foreignKey:
+                tableName: requests_types
+                columnName: id
+        - addColumn:
+            tableName: issues
+            columnName: status
+            type: INT
+            constraints:
+              nullable: false
+              foreignKey:
+                tableName: issues_types

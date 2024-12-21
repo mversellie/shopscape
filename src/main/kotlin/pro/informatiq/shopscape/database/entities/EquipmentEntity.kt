@@ -19,8 +19,8 @@ data class EquipmentEntity(
             serialNumber = this.serialNumber,
             description = this.description,
             modelNumber = this.modelNumber,
-            nameIn = "",
-            idIn = entityId
+            name = "",
+            id = entityId
         )
     }
 }

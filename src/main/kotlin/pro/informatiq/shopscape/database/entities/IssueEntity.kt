@@ -17,15 +17,9 @@ import java.util.*
     @Column(name = "name")
     var name: String = "",
 
+    @Column(name = "status")
+    var status: Int = -1,
+
     @Column(name = "description", length = Integer.MAX_VALUE)
     var description: String = ""
-){
-    fun toIssuePojo(): Issue {
-        return Issue(
-            id = this.id,
-            name = this.name,
-            description = this.description,
-            entityId = this.entityId
-        )
-    }
-}
+)

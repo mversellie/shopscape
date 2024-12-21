@@ -3,6 +3,7 @@ package pro.informatiq.shopscape.database.repositories
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
+import pro.informatiq.shopscape.data.Issue
 import pro.informatiq.shopscape.database.entities.IssueEntity
 import java.util.*
 
@@ -10,79 +11,21 @@ import java.util.*
 interface IssueRepository : JpaRepository<IssueEntity, UUID> {
 
     @Query(
-        value = "SELECT e.id AS entityId, e.name AS entityName, s.street_address, s.city, s.state, s.zip_code, s.phone_number, i.id AS issueId, i.name AS issueName, i.description AS issueDescription " +
-                "FROM entities e " +
-                "JOIN stores s ON e.id = s.entity_id " +
-                "LEFT JOIN issues i ON e.id = i.entity_id " +
-                "WHERE i.id IS NOT NULL",
-        nativeQuery = true
+        value = "SELECT new pro.informatiq.shopscape.data.Issue(i.id, i.name, i.description, i.entityId, it.name) " +
+                "FROM IssueEntity i,IssueTypeEntity it WHERE i.status = it.id"
     )
-    fun findAllStoresWithIssues(): List<StoreWithIssuesProjection>
-
+    fun findAllIssuesWithTypes(): List<Issue>
 
     @Query(
-        value = "SELECT e.id AS entityId, e.name AS entityName, s.street_address, s.city, s.state, s.zip_code, s.phone_number, eq.serial_number, eq.description, eq.model_number, i.id AS issueId, i.name AS issueName, i.description AS issueDescription " +
-                "FROM entities e " +
-                "JOIN stores s ON e.id = s.entity_id " +
-                "JOIN equipment eq ON e.id = eq.entity_id " +
-                "LEFT JOIN issues i ON e.id = i.entity_id " +
-                "WHERE i.id IS NOT NULL",
-        nativeQuery = true
+        value = "SELECT new pro.informatiq.shopscape.data.Issue(i.id, i.name, i.description, i.entityId, it.name) " +
+                "FROM IssueEntity i,IssueTypeEntity it WHERE i.status = it.id AND i.id in :entities"
     )
-    fun findAllStoresWithEquipmentThatHasIssues(): List<StoreWithEquipmentAndIssuesProjection>
+    fun findAllIssuesWithTypesForEntitiesInList(entities: List<UUID>): List<Issue>
 
     @Query(
-        value = "SELECT e.id AS entityId, e.name AS entityName, s.street_address, s.city, s.state, s.zip_code, s.phone_number, " +
-                "COUNT(i.id) AS issueCount, COUNT(DISTINCT eq.id) AS equipmentIssueCount " +
-                "FROM entities e " +
-                "JOIN stores s ON e.id = s.entity_id " +
-                "LEFT JOIN issues i ON e.id = i.entity_id " +
-                "LEFT JOIN equipment eq ON e.id = eq.entity_id " +
-                "LEFT JOIN issues eqi ON eq.id = eqi.entity_id " +
-                "GROUP BY e.id, e.name, s.street_address, s.city, s.state, s.zip_code, s.phone_number",
-        nativeQuery = true
+        value = "SELECT new pro.informatiq.shopscape.data.Issue(i.id, i.name, i.description, i.entityId, it.name) " +
+                "FROM IssueEntity i,IssueTypeEntity it WHERE i.status = it.id AND i.id = :id"
     )
-    fun findAllStoresWithIssueCounts(): List<StoreWithIssueCountsProjection>
+    fun findAllIssuesWithTypesForEntity(id: UUID): List<Issue>
 
-}
-
-public interface StoreWithIssueCountsProjection {
-        fun getEntityId(): UUID
-        fun getEntityName(): String
-        fun getStreetAddress(): String
-        fun getCity(): String
-        fun getState(): String
-        fun getZipCode(): String
-        fun getPhoneNumber(): String
-        fun getIssueCount(): Long
-        fun getEquipmentIssueCount(): Long
-}
-
-// Projections
-public interface StoreWithIssuesProjection {
-    fun getEntityId(): UUID
-    fun getEntityName(): String
-    fun getStreetAddress(): String
-    fun getCity(): String
-    fun getState(): String
-    fun getZipCode(): String
-    fun getPhoneNumber(): String
-    fun getIssueId(): UUID?
-    fun getIssueName(): String?
-    fun getIssueDescription(): String?
-}
-public interface StoreWithEquipmentAndIssuesProjection {
-    fun getEntityId(): UUID
-    fun getEntityName(): String
-    fun getStreetAddress(): String
-    fun getCity(): String
-    fun getState(): String
-    fun getZipCode(): String
-    fun getPhoneNumber(): String
-    fun getSerialNumber(): String?
-    fun getDescription(): String?
-    fun getModelNumber(): String?
-    fun getIssueId(): UUID?
-    fun getIssueName(): String?
-    fun getIssueDescription(): String?
 }

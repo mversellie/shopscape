@@ -23,16 +23,4 @@ data class StoreEntity(
     var zipCode: String,
     @Column(name = "phone_number")
     var phoneNumber: String,
-){
-    fun toStorePojo(name:String): Store {
-            return Store(
-                idIn = this.entityId,
-                streetAddress = this.streetAddress,
-                city = this.city,
-                state = this.state,
-                zipCode = this.zipCode,
-                phoneNumber = this.phoneNumber,
-                nameIn = name
-            )
-    }
-}
+)

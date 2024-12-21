@@ -3,6 +3,7 @@ package pro.informatiq.shopscape.database.repositories
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
+import pro.informatiq.shopscape.data.Equipment
 import pro.informatiq.shopscape.database.entities.EquipmentEntity
 import java.util.*
 
@@ -11,8 +12,10 @@ interface EquipmentRepository : JpaRepository<EquipmentEntity, UUID> {
     fun findBySerialNumber(serialNumber: String): EquipmentEntity?
 
     @Query(
-        value = "SELECT e.* FROM equipment e INNER JOIN equipment_relationships er ON e.entity_id = er.equipment_id INNER JOIN stores s ON er.store_id = s.entity_id WHERE s.entity_id = :storeId",
-        nativeQuery = true
+        value = "SELECT new pro.informatiq.shopscape.data.Equipment(e.serialNumber,e.description,e.modelNumber,e.entityId,me.name,null,null)  FROM EquipmentEntity e " +
+                "JOIN EquipmentRelationshipEntity er ON e.entityId = er.equipment " +
+                "JOIN MainEntity me ON e.entityId = me.id " +
+                "WHERE er.store= :storeId",
     )
-    fun findByStore(storeId: UUID): List<EquipmentEntity>
+    fun findByStore(storeId: UUID): MutableList<Equipment>
 }

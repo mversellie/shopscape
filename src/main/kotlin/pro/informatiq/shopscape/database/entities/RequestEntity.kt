@@ -17,16 +17,9 @@ data class RequestEntity (
     @Column(name = "name")
     var name: String = "",
 
+    @Column(name = "status")
+    var status: Int = -1,
+
     @Column(name = "description", length = Integer.MAX_VALUE)
     var description: String = "",
-){
-
-    fun toRequestPojo(): Request {
-        return Request(
-            id = this.id,
-            name = this.name,
-            description = this.description,
-            entityId = this.id
-        )
-    }
-}
+)

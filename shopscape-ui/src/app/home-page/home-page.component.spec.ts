@@ -1,22 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomePageComponent } from './home-page.component';
-import { EntitySummaryBarComponent } from '../entity-summary-bar/entity-summary-bar.component';
 import { RequestService } from '../services/request.service';
 import { IssueService } from '../services/issue.service';
-import { of } from 'rxjs';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
   let fixture: ComponentFixture<HomePageComponent>;
-  let mockRequestService: jasmine.SpyObj<RequestService>;
-  let mockIssueService: jasmine.SpyObj<IssueService>;
+  let mockRequestService: jasmine.SpyObj<RequestService> = jasmine.createSpyObj('RequestService', ['getTotalRequests']);
+  let mockIssueService: jasmine.SpyObj<IssueService> = jasmine.createSpyObj('IssueService', ['getTotalIssues']);
 
   beforeEach(async () => {
     mockRequestService = jasmine.createSpyObj('RequestService', ['getTotalRequests']);
     mockIssueService = jasmine.createSpyObj('IssueService', ['getTotalIssues']);
 
     await TestBed.configureTestingModule({
-      declarations: [ HomePageComponent, EntitySummaryBarComponent ],
+      declarations: [  ],
       providers: [
         { provide: RequestService, useValue: mockRequestService },
         { provide: IssueService, useValue: mockIssueService }
@@ -35,21 +33,23 @@ describe('HomePageComponent', () => {
 
   it('should fetch request and issue counts on initialization', () => {
     // Mock the service responses
-    // @ts-ignore
-    mockRequestService.getTotalRequests.and.returnValue(of({ count: 10 }));
-    // @ts-ignore
-    mockIssueService.getTotalIssues.and.returnValue(of({ count: 5 }));
+    mockRequestService.getTotalRequests.and.returnValue(Promise.resolve({ count: 10 }));
+    mockIssueService.getTotalIssues.and.returnValue(Promise.resolve({ count: 5 }));
 
     // Trigger the initialization
     component.fetchCounts();
 
+    component.ngOnInit();
+    fixture.detectChanges();
+    // Assert that the counts are set correctly
+    fixture.detectChanges();
+    expect(component.requestsCount).toBe(10);
+    expect(component.issuesCount).toBe(5);
+
     // Assert that the services were called
     expect(mockRequestService.getTotalRequests).toHaveBeenCalled();
     expect(mockIssueService.getTotalIssues).toHaveBeenCalled();
+    });
 
-    // Assert that the counts are set correctly
-    fixture.detectChanges();
-    expect(component.requests).toBe(10);
-    expect(component.issues).toBe(5);
-  });
+
 });

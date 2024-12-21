@@ -1,0 +1,24 @@
+.place-card {
+  text-align: center;
+}
+
+.center-image {
+  display: block;
+  margin: 0 auto;
+}
+
+.content {
+  text-align: left; /* Align text left within the centered container */
+}
+
+.name {
+  margin-top: 1rem;
+}
+
+.description {
+  margin-top: 0.5rem;
+}
+
+.address {
+  margin-top: 0.5rem;
+}

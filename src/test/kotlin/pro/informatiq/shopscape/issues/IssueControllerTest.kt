@@ -6,13 +6,15 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import pro.informatiq.shopscape.data.Issue
 import java.util.*
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 @ExtendWith(MockKExtension::class)
 class IssueControllerTest {
  private val issueService: IssueService = mockk()
  private val issueController = IssueController(issueService)
+ /*
  @Test
  fun `getShopsWithIssues should return a 200 with a list of StoreIssueSummary`() {
   val mockSummaries = listOf(
@@ -35,7 +37,7 @@ class IssueControllerTest {
   assertNotNull(body)
   assertEquals(1, (body as Map<String, List<IssueService.StoreIssueSummary>>)["shops"]?.size)
  }
-
+*/
  @Test
  fun `getTotalIssues should return Ok with the correct count`() {
   // Given
@@ -48,6 +50,23 @@ class IssueControllerTest {
   // Then
   assertEquals(HttpStatus.OK, response.statusCode)
   assertEquals(expectedCount, response.body?.get("count"))
+ }
+
+ @Test
+ fun `getAllIssues should return a ResponseEntity with a list of issues`() {
+  // Given
+  val issues = listOf(
+   Issue(UUID.randomUUID(), "Issue 1", "Description 1", UUID.randomUUID(), "Bug"),
+   Issue(UUID.randomUUID(), "Issue 2", "Description 2", UUID.randomUUID(), "Feature Request")
+  )
+  every { issueService.getAllIssuesWithTypes() } returns issues
+
+  // When
+  val responseEntity: ResponseEntity<Map<String, List<Issue>>> = issueController.getAllIssues()
+
+  // Then
+  assert(responseEntity.statusCode.is2xxSuccessful)
+  assertEquals(issues, responseEntity.body?.get("issues"))
  }
 
 }

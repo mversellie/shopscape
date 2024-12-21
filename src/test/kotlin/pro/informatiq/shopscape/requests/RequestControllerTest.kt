@@ -6,13 +6,14 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import io.mockk.junit5.MockKExtension
 import org.springframework.http.HttpStatus
+import pro.informatiq.shopscape.data.Request
 import java.util.*
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 @ExtendWith(MockKExtension::class)
 class RequestControllerTest {
  private val requestService: RequestService = mockk()
  private val requestController = RequestController(requestService)
+ /*
  @Test
  fun `getShopsWithRequests should return a 200 with a list of StoreRequestSummary`() {
   val mockSummaries = listOf(
@@ -47,7 +48,7 @@ class RequestControllerTest {
   assertEquals(5, firstShop.requestCount)
   assertEquals(2, firstShop.equipmentRequestCount)
  }
-
+*/
  @Test
  fun `getTotalRequests should return Ok with the correct count`() {
   // Given
@@ -61,5 +62,40 @@ class RequestControllerTest {
   assertEquals(HttpStatus.OK, response.statusCode)
   assertEquals(expectedCount, response.body?.get("count"))
  }
+
+ @Test
+ fun `getAllRequests should return 200 OK with requests data`() {
+  val mockRequests = listOf(
+   Request(
+    id = UUID.randomUUID(),
+    entityId = UUID.randomUUID(),
+    name = "Request 1",
+    status = "Pending",
+    description = "Some description"
+   ),
+   Request(
+    id = UUID.randomUUID(),
+    entityId = UUID.randomUUID(),
+    name = "Request 2",
+    status = "Completed",
+    description = "Another description"
+   )
+  )
+
+  every { requestService.getAllRequestsWithStatus() } answers {mockRequests}
+
+  val response = requestController.getAllRequests()
+
+  assert(response.statusCode == HttpStatus.OK)
+  val body = response.body
+  assert(body != null) // Ensure body is not null
+
+  assert(body!!["requests"] is List<*>)
+  val requests = body["requests"] as List<Request>
+  assert(requests.size == 2)
+  assert(requests[0].status == "Pending")
+  assert(requests[1].status == "Completed")
+ }
+
 
 }

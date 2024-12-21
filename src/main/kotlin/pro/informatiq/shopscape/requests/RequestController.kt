@@ -4,16 +4,17 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
+import pro.informatiq.shopscape.data.Request
 
 @RestController
 @RequestMapping("/api/requests")
 class RequestController(val requestService: RequestService) {
-    //@GetMapping("/api/requests")
+    /*@GetMapping("/api/requests")
     fun getShopsWithRequests(): ResponseEntity<Map<String, List<RequestService.StoreRequestSummary>>> {
         val storeSummaries = requestService.getStoreRequestSummaries()
         val responseBody = mapOf("shops" to storeSummaries)
         return ResponseEntity.ok(responseBody)
-    }
+    }*/
 
     @GetMapping("/total-requests")
     fun getTotalRequests(): ResponseEntity<Map<String, Long>> {
@@ -21,5 +22,12 @@ class RequestController(val requestService: RequestService) {
         val responseBody = mapOf("count" to totalRequests)
         return ResponseEntity.ok(responseBody)
     }
+
+    @GetMapping
+    fun getAllRequests(): ResponseEntity<Map<String, List<Request>>> {
+        val requests = requestService.getAllRequestsWithStatus()
+        return ResponseEntity.ok(mapOf("requests" to requests))
+    }
+
 
 }

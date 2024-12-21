@@ -6,13 +6,6 @@ describe('EntitySummaryBarComponent', () => {
   let fixture: ComponentFixture<EntitySummaryBarComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [EntitySummaryBarComponent]
-    })
-      .compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(EntitySummaryBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

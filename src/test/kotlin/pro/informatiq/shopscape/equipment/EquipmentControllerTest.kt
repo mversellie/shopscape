@@ -19,8 +19,8 @@ class EquipmentControllerTest {
  @Test
  fun `should create new equipment`() {
   val newEquipment = Equipment(
-   idIn = UUID.randomUUID(), // ID from request body
-   nameIn = "Test Equipment",
+   id = UUID.randomUUID(), // ID from request body
+   name = "Test Equipment",
    description = "Some description",
    modelNumber = "Model 123",
    serialNumber = "SN456"
@@ -32,7 +32,7 @@ class EquipmentControllerTest {
     .content(objectMapper.writeValueAsString(newEquipment))
   )
    .andExpect(MockMvcResultMatchers.status().isCreated)
-  verify { equipmentService.createEquipment(any(), any(), any(), any(), not(newEquipment.idIn)) }
+  verify { equipmentService.createEquipment(any(), any(), any(), any(), not(newEquipment.id)) }
  }
 
   @Test
@@ -54,7 +54,7 @@ class EquipmentControllerTest {
  fun `should retrieve equipment for a store`() {
   val aName = "name"
   val storeId = UUID.randomUUID()
-  val equipmentList = listOf(Equipment("serial1", "desc1", "model1", storeId, nameIn = aName))
+  val equipmentList = mutableListOf(Equipment("serial1", "desc1", "model1", storeId, name = aName))
 
   every { equipmentService.getEquipmentForStore(storeId) } returns equipmentList
 

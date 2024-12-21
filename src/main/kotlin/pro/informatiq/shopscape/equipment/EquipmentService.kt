@@ -10,12 +10,16 @@ import pro.informatiq.shopscape.database.repositories.EquipmentRelationshipRepos
 import pro.informatiq.shopscape.database.repositories.EquipmentRepository
 import pro.informatiq.shopscape.entities.EntityTypeEnum
 import pro.informatiq.shopscape.entities.MainEntityService
+import pro.informatiq.shopscape.issues.IssueService
+import pro.informatiq.shopscape.requests.RequestService
 
 @Service
 class EquipmentService(
     private val equipmentRepository: EquipmentRepository,
     private val mainEntityService: MainEntityService,
-    private val equipmentRelationshipRepository: EquipmentRelationshipRepository
+    private val equipmentRelationshipRepository: EquipmentRelationshipRepository,
+    private val issueService: IssueService,
+    private val requestService: RequestService
 ) {
     @Transactional
     fun createEquipment(
@@ -44,8 +48,17 @@ class EquipmentService(
     }
 
 
-    fun getEquipmentForStore(storeId: UUID): List<Equipment> {
-        return equipmentRepository.findByStore(storeId).map { it.toEquipmentPojo() }
+
+    fun getEquipmentForStore(storeId: UUID): MutableList<Equipment> {
+        val equipmentEntitiesMap = equipmentRepository.findByStore(storeId)
+        val equipmentIds = equipmentEntitiesMap.map { it.id }
+        val requestsGrouped = requestService.getAllRequestsForEntities(equipmentIds).groupBy { it.entityId }
+        val issuesGrouped = issueService.getAllIssuesWithTypesForEntities(equipmentIds).groupBy { it.entityId }
+        for (eq in equipmentEntitiesMap){
+            eq.requests=requestsGrouped[eq.id].orEmpty()
+            eq.issues=issuesGrouped[eq.id].orEmpty()
+        }
+        return equipmentEntitiesMap
     }
 
 

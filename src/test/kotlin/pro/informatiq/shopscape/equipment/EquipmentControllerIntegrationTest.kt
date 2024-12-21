@@ -41,11 +41,11 @@ class EquipmentControllerIntegrationTest {
  fun `should create new equipment - integration test`() {
   val badId = UUID.randomUUID()
   val newEquipment = Equipment(
-   nameIn = "Test Equipment",
+   name = "Test Equipment",
    description = "Some description",
    modelNumber = "Model 123",
    serialNumber = "SN456",
-   idIn = badId
+   id = badId
   )
   mockMvc.perform(
    MockMvcRequestBuilders.post("/api/equipment")

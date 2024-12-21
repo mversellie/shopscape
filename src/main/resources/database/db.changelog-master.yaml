@@ -9,3 +9,5 @@ databaseChangeLog:
       file: database/TABLES/TABLES_004.yaml
   - include:
       file: database/TABLES/TABLES_005.yaml
+  - include:
+      file: database/TABLES/TABLES_006.yaml

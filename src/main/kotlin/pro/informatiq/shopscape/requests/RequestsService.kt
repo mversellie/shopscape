@@ -1,6 +1,7 @@
 package pro.informatiq.shopscape.requests
 
 import org.springframework.stereotype.Service
+import pro.informatiq.shopscape.data.Request
 import pro.informatiq.shopscape.database.repositories.RequestsRepository
 import java.util.*
 @Service
@@ -16,6 +17,7 @@ class RequestService(val requestRepository: RequestsRepository) {
         val requestCount: Long,
         val equipmentRequestCount: Long
     )
+    /*
     fun getStoreRequestSummaries(): List<StoreRequestSummary> {
         return requestRepository.findAllStoresWithRequestCounts().map { projection ->
             StoreRequestSummary(
@@ -31,8 +33,21 @@ class RequestService(val requestRepository: RequestsRepository) {
             )
         }
     }
+    */
+
+    fun getAllRequestsWithStatus(): List<Request> {
+        return requestRepository.findAllRequestsWithStatus()
+    }
+
 
     fun getTotalRequestCount(): Long {
         return requestRepository.count()
+    }
+
+    fun getAllRequestsForEntities(entities: List<UUID>): List<Request> {
+        return requestRepository.findAllRequestsForEntities(entities)
+    }
+    fun getAllRequestsForID(id: UUID): List<Request> {
+        return requestRepository.findAllRequestsForID(id)
     }
 }
