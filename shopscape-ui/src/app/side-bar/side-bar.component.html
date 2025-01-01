@@ -49,11 +49,10 @@
     Locations
   </div>
 
-
-  <li class="nav-item">
-    <a class="nav-link" href="charts.html">
+  <li class="nav-item" *ngFor="let store of storeSummaries">
+    <a class="nav-link" routerLink="{{'/stores/' + store.ID}}">
       <i class="fas fa-fw fa-chart-area"></i>
-      <span>Charts</span></a>
+      <span>{{store.Name}}</span></a>
   </li>
 
   <!-- Divider -->

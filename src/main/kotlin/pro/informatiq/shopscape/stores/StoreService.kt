@@ -51,6 +51,21 @@ class StoreService(val storeRepository: StoreRepository, val entityService:MainE
             store.issues=issuesGrouped[store.id].orEmpty()
         }
         return stores
-
     }
+
+    fun getStoreById(storeId:UUID): Store? {
+        val storeEntity = storeRepository.findByStoreId(storeId)
+        if (storeEntity != null) {
+            val requestsGrouped = requestService.getAllRequestsForEntities(listOf(storeId)).groupBy { it.entityId }
+            val issuesGrouped = issueService.getAllIssuesWithTypesForEntities(listOf(storeId)).groupBy { it.entityId }
+            storeEntity.equipment = equipmentService.getEquipmentForStore(storeEntity.id)
+            storeEntity.inflateRequestsAndIssues()
+            storeEntity.requests=requestsGrouped[storeEntity.id].orEmpty()
+            storeEntity.issues=issuesGrouped[storeEntity.id].orEmpty()
+            return storeEntity
+        }
+        return null
+    }
+
+
 }

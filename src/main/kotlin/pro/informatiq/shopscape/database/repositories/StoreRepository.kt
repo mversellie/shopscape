@@ -17,4 +17,10 @@ interface StoreRepository : JpaRepository<StoreEntity, UUID> {
                 "JOIN MainEntity me ON e.entityId = me.id "
     )
     fun findAllAsPojo():MutableList<Store>
+
+    @Query(
+        value = "SELECT new pro.informatiq.shopscape.data.Store(me.id,me.name,e.streetAddress,e.city,e.state,e.zipCode,e.phoneNumber,null,null,null) FROM StoreEntity e " +
+                "JOIN MainEntity me ON e.entityId = me.id WHERE e.entityId = :storeId "
+    )
+    fun findByStoreId(storeId: UUID):Store?
 }

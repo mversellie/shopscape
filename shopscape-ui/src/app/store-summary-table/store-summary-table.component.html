@@ -1,0 +1,7 @@
+<table>
+  <tr *ngFor="let summary of summaries">
+    <td><a [routerLink]="'/stores/' + summary.ID">{{ summary.Name }}</a></td>
+    <td>{{ summary.RequestCount }}</td>
+    <td>{{ summary.IssueCount }}</td>
+  </tr>
+</table>

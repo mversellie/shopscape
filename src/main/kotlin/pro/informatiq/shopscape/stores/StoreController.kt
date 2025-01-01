@@ -1,17 +1,15 @@
 package pro.informatiq.shopscape.stores
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import pro.informatiq.shopscape.data.Store
 import java.util.*
 import kotlin.collections.Map
 
 @RestController
+@RequestMapping("/api/stores")
 class StoreController(val storeService: StoreService) {
-    @PostMapping("/stores")
+    @PostMapping
     fun createStore(@RequestBody store: Store): ResponseEntity<Store> {
         val entityId = UUID.randomUUID()
         storeService.createStore(
@@ -26,9 +24,16 @@ class StoreController(val storeService: StoreService) {
         return ResponseEntity.status(HttpStatus.CREATED).body(store.copy(id = entityId))
     }
 
-    @GetMapping("/stores")
+    @GetMapping
     fun getAllStores(): ResponseEntity<Map<String,List<Store>>> {
         val stores = storeService.getAllStoresWithEquipment()
         return ResponseEntity.ok(mapOf("stores" to stores))
+    }
+
+    @GetMapping("/{id}")
+    fun getStoreById(@PathVariable id: UUID): ResponseEntity<Store?> {
+        val store = storeService.getStoreById(id)
+        store?.let { return ResponseEntity.ok(store)}
+        return ResponseEntity.notFound().build()
     }
 }

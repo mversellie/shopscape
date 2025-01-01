@@ -32,7 +32,7 @@ class StoreControllerTest {
   )
   every { storeService.createStore(any(), any(), any(), any(), any(), any(), any()) } returns Unit
   mockMvc.perform(
-   MockMvcRequestBuilders.post("/stores")
+   MockMvcRequestBuilders.post("/api/stores")
     .contentType(MediaType.APPLICATION_JSON)
     .content(objectMapper.writeValueAsString(newStore))
   )
@@ -94,8 +94,41 @@ class StoreControllerTest {
   store2.equipment = listOf(equipment3).toMutableList()
   every { storeService.getAllStoresWithEquipment() } returns listOf(store1, store2)
 
-  mockMvc.perform(MockMvcRequestBuilders.get("/stores"))
+  mockMvc.perform(MockMvcRequestBuilders.get("/api/stores"))
    .andExpect(MockMvcResultMatchers.status().isOk)
    .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(mapOf("stores" to listOf(store1, store2)))))
  }
+
+ @Test
+ fun `should get a specific store by ID`() {
+  val store = Store(
+   id = UUID.randomUUID(),
+   streetAddress = "456 Oak Ave",
+   city = "Springfield",
+   state = "IL",
+   zipCode = "62701",
+   phoneNumber = "123-456-7890",
+   name = "Store 2"
+  )
+  every { storeService.getStoreById(any()) } returns store
+
+  mockMvc.perform(
+   MockMvcRequestBuilders.get("/api/stores/{id}", store.id)
+  )
+   .andExpect(MockMvcResultMatchers.status().isOk)
+   .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(store)))
+ }
+
+ @Test
+ fun `should return 404 when store not found`() {
+  val nonExistentId = UUID.randomUUID()
+  every { storeService.getStoreById(nonExistentId) } returns null
+
+  mockMvc.perform(
+   MockMvcRequestBuilders.get("/api/stores/{id}", nonExistentId)
+  )
+   .andExpect(MockMvcResultMatchers.status().isNotFound)
+ }
+
+
 }

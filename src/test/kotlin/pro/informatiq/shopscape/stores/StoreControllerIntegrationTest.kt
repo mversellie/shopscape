@@ -52,7 +52,7 @@ class StoreControllerIntegrationTest {
             name = "My Store"
         )
         mockMvc.perform(
-            MockMvcRequestBuilders.post("/stores")
+            MockMvcRequestBuilders.post("/api/stores")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newStore))
         )
@@ -203,10 +203,46 @@ class StoreControllerIntegrationTest {
             print(objectMapper.writeValueAsString(expected_map))
 
 
-            mockMvc.perform(MockMvcRequestBuilders.get("/stores"))
+            mockMvc.perform(MockMvcRequestBuilders.get("/api/stores"))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected_map)))
         }
+
+    @Test
+    fun `should get a store by ID`() {
+        // 1. Create a store for testing
+        val store = Store(
+            id = UUID.randomUUID(),
+            streetAddress = "123 Main St",
+            city = "Anytown",
+            state = "CA",
+            zipCode = "91234",
+            phoneNumber = "555-123-4567",
+            name = "My Store"
+        )
+
+        val mainEntity = MainEntity(id = store.id, name = store.name, entityType = 1)
+        val storeEntity = StoreEntity(entityId = store.id,
+            streetAddress = store.streetAddress,
+            city = store.city,
+            state = store.state,
+            zipCode = store.zipCode,
+            phoneNumber = store.phoneNumber)
+        mainEntityRepository.save(mainEntity)
+        storeRepository.save(storeEntity)
+
+        // 2. Make the request to the endpoint
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/stores/${store.id}"))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(store)))
+    }
+
+    @Test
+    fun `should return 404 when store not found`() {
+        val nonExistentId = UUID.randomUUID()
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/stores/${nonExistentId}"))
+            .andExpect(MockMvcResultMatchers.status().isNotFound)
+    }
 
 
 

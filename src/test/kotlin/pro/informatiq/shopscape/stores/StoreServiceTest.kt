@@ -84,4 +84,21 @@ class StoreServiceTest {
   assertEquals(storeEntity2.id, stores[1].id)
   assertEquals(equipment2, stores[1].equipment)
  }
+
+ @Test
+ fun `getStoreById should return store with equipment`(){
+  val storeId = UUID.randomUUID()
+  val storeEntity = Store(id = storeId, name = "Test Store",  streetAddress = "Address 1", city = "City 1", state = "State 1", zipCode = "12345", phoneNumber = "123-456-7890")
+  val equipment = mutableListOf<Equipment>()
+
+  coEvery { storeRepository.findByStoreId(storeId) } returns storeEntity
+  coEvery { equipmentService.getEquipmentForStore(storeId) } returns equipment
+  coEvery { requestService.getAllRequestsForEntities(listOf(storeId)) } returns listOf()
+  coEvery { issueService.getAllIssuesWithTypesForEntities(listOf(storeId))} returns listOf()
+  val store = storeService.getStoreById(storeId)
+  assertEquals(storeEntity.id, store?.id)
+  assertEquals(storeEntity.name, store?.name)
+  assertEquals(equipment, store?.equipment)
+ }
+
 }
