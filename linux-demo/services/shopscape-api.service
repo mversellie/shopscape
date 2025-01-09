@@ -1,0 +1,11 @@
+[Unit]
+Description=Shopscape API service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/java -jar <jar path>
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

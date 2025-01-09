@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    environment:
+      DNS_SERVERS: 8.8.8.8
+    volumes:
+      - /root/compose/nginx-proxy/data:/data
+      - /root/compose/nginx-proxy/letsencrypt:/etc/letsencrypt
+    network_mode: host
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: ${SHOP_SCAPE_DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

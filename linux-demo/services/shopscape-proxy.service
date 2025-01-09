@@ -1,0 +1,12 @@
+[Unit]
+Description=Shopscape Proxy service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/docker compose up
+WorkingDirectory=<docker compose directory path>
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
