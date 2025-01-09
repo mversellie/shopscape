@@ -4,15 +4,16 @@ import { IssueTableComponent } from '../issue-table/issue-table.component';
 import { RequestTableComponent } from '../request-table/request-table.component';
 import { ShopScapeRequest } from '../data/ShopScapeRequest';
 import { ShopScapeIssue } from '../data/ShopScapeIssue';
-import { ShopScapeStore } from '../data/Entities';
-import { RequestService } from '../services/request.service';
-import { IssueService } from '../services/issue.service';
+import {Equipment, ShopScapeStore} from '../data/Entities';
+import {EquipmentTableComponent} from '../equipment-table/equipment-table.component';
+import {ShopService} from '../services/shop.service';
 
 @Component({
   selector: 'app-store-page',
   imports: [
     IssueTableComponent,
-    RequestTableComponent
+    RequestTableComponent,
+    EquipmentTableComponent
   ],
   templateUrl: './store-page.component.html',
   styleUrl: './store-page.component.css'
@@ -22,30 +23,23 @@ export class StorePageComponent implements OnInit {
   issuesCount: number = 0;
   requests: ShopScapeRequest[] = [];
   issues: ShopScapeIssue[] = [];
+  equipment:Equipment[] = [];
   store:ShopScapeStore = new ShopScapeStore('', '', '', '', '', '', '')
 
   constructor(
-    private requestService: RequestService,
-    private issueService: IssueService,
+    private shopService: ShopService,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.store = data["entityContent"]; // Access the resolved store data
-      this.fetchCounts();
-      this.fetchIssuesAndRequests();
+      console.log(this.store)
+      this.equipment = this.store.equipment
+      this.requests = this.shopService.flattenAllRequestsForStore(this.store)
+      this.issues = this.shopService.flattenAllIssuesForStore(this.store)
+      this.requestsCount = this.requests.length
+      this.issuesCount = this.issues.length
     });
   }
-
-  async fetchCounts() {
-    this.requestsCount = await this.requestService.getTotalRequests().then(data => data.count);
-    this.issuesCount = await this.issueService.getTotalIssues().then(data => data.count);
-  }
-
-  async fetchIssuesAndRequests() {
-    this.requests = await this.requestService.getAllRequests();
-    this.issues = await this.issueService.getAllIssues()
-  }
-
 }

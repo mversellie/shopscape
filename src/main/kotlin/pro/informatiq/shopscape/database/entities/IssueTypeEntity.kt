@@ -2,9 +2,10 @@ package pro.informatiq.shopscape.database.entities
 
 import jakarta.persistence.*
 
+
 @Entity
-@Table(name = "requests_types")
-data class RequestTypeEntity(
+@Table(name = "issues_types")
+data class IssueTypeEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,

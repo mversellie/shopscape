@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: add first entity types
+      author: Marco
+      changes:
+        - insert:
+            tableName: entity_type
+            columns:
+              - column:
+                  name: name
+                  value: 'Store'
+              - column:
+                  name: id
+                  value: 1
+        - insert:
+            tableName: entity_type
+            columns:
+              - column:
+                  name: name
+                  value: 'Equipment'
+              - column:
+                  name: id
+                  value: 2

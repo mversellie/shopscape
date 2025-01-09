@@ -21,14 +21,11 @@ export class SideBarComponent implements OnInit{
   sidebarClasses:string[] = this.standardSidebar
   @Output() changeStatus = new EventEmitter<boolean>();
 
-  storeSummaries:StoreSummary[] = []
-
-  constructor(private storeService:ShopService) {
+  constructor(protected storeService:ShopService) {
   }
 
   ngOnInit(){
     this.resizeSidebar()
-    this.storeSummaries = this.storeService.storeSummaries
     this.storeService.getShops()
   }
 

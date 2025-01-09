@@ -12,19 +12,17 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import pro.informatiq.shopscape.data.Equipment
 import pro.informatiq.shopscape.data.Store
-import pro.informatiq.shopscape.database.entities.EquipmentEntity
-import pro.informatiq.shopscape.database.entities.EquipmentRelationshipEntity
-import pro.informatiq.shopscape.database.entities.MainEntity
-import pro.informatiq.shopscape.database.entities.StoreEntity
-import pro.informatiq.shopscape.database.repositories.EquipmentRelationshipRepository
-import pro.informatiq.shopscape.database.repositories.EquipmentRepository
-import pro.informatiq.shopscape.database.repositories.MainEntityRepository
-import pro.informatiq.shopscape.database.repositories.StoreRepository
+import pro.informatiq.shopscape.database.entities.*
+import pro.informatiq.shopscape.database.repositories.*
 import java.util.*
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 class StoreControllerIntegrationTest {
+    @Autowired
+    private lateinit var requestsRepository: RequestsRepository
+
     @Autowired
     private lateinit var mockMvc: MockMvc
     @Autowired
@@ -35,7 +33,6 @@ class StoreControllerIntegrationTest {
     private lateinit var storeRepository: StoreRepository
     @Autowired
     private lateinit var equipmentRelationshipRepository: EquipmentRelationshipRepository
-
 
     @Autowired
     private lateinit var equipmentRepository: EquipmentRepository
@@ -208,6 +205,7 @@ class StoreControllerIntegrationTest {
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected_map)))
         }
 
+
     @Test
     fun `should get a store by ID`() {
         // 1. Create a store for testing
@@ -243,6 +241,49 @@ class StoreControllerIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/stores/${nonExistentId}"))
             .andExpect(MockMvcResultMatchers.status().isNotFound)
     }
+
+    @Test
+    fun `should get requests for a store`() {
+        val store = StoreEntity(
+            entityId = UUID.randomUUID(),
+            streetAddress = "123 Main St",
+            city = "Anytown",
+            state = "CA",
+            zipCode = "91234",
+            phoneNumber = "555-123-4567",
+        )
+
+        val storeName = "My Store"
+        val equipmentName = "Hammer"
+
+        val equipment1 = EquipmentEntity(
+            entityId =  UUID.randomUUID(),
+            serialNumber = "EQ12345",
+            description = "Heavy Hammer",
+            modelNumber = "HM-100"
+        )
+
+        val request1 = RequestEntity(id = UUID.randomUUID(), name = "Request 1", description = "Desc 1", entityId = equipment1.entityId)
+        val request2 = RequestEntity(id = UUID.randomUUID(), name = "Request 2", description = "Desc 2", entityId = store.entityId)
+
+        val mainEntity = MainEntity(id = store.entityId, name = storeName, entityType = 1)
+        val mainEntity2 = MainEntity(id = equipment1.entityId, name = equipmentName, entityType = 2)
+
+        // Create relationship entities
+        val storeEquipment1 = EquipmentRelationshipEntity(id = UUID.randomUUID(), store = store.entityId, equipment = equipment1.entityId)
+
+        mainEntityRepository.saveAll(listOf( mainEntity,mainEntity2))
+        storeRepository.save(store)
+        equipmentRepository.save(equipment1)
+        equipmentRelationshipRepository.save(storeEquipment1)
+        requestsRepository.saveAll(listOf(request1, request2))
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/stores/${store.entityId}/requests"))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(Collections.singletonMap("requests",listOf(request1, request2)))))
+    }
+
+
 
 
 

@@ -8,7 +8,9 @@ import kotlin.collections.Map
 
 @RestController
 @RequestMapping("/api/stores")
-class StoreController(val storeService: StoreService) {
+class StoreController(
+    val storeService: StoreService,
+) {
     @PostMapping
     fun createStore(@RequestBody store: Store): ResponseEntity<Store> {
         val entityId = UUID.randomUUID()
@@ -36,4 +38,5 @@ class StoreController(val storeService: StoreService) {
         store?.let { return ResponseEntity.ok(store)}
         return ResponseEntity.notFound().build()
     }
+
 }

@@ -3,7 +3,7 @@ package pro.informatiq.shopscape.stores
 import pro.informatiq.shopscape.equipment.EquipmentService
 
 import io.mockk.*
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pro.informatiq.shopscape.data.Equipment
@@ -93,12 +93,15 @@ class StoreServiceTest {
 
   coEvery { storeRepository.findByStoreId(storeId) } returns storeEntity
   coEvery { equipmentService.getEquipmentForStore(storeId) } returns equipment
-  coEvery { requestService.getAllRequestsForEntities(listOf(storeId)) } returns listOf()
-  coEvery { issueService.getAllIssuesWithTypesForEntities(listOf(storeId))} returns listOf()
+  coEvery { requestService.getAllRequestsForID(any()) } returns listOf()
+  coEvery { issueService.getIssueWithTypesForEntity(any())} returns listOf()
   val store = storeService.getStoreById(storeId)
   assertEquals(storeEntity.id, store?.id)
   assertEquals(storeEntity.name, store?.name)
   assertEquals(equipment, store?.equipment)
  }
+
+
+
 
 }

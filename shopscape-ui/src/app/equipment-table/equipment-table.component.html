@@ -1,0 +1,23 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Model</th>
+    <th>Serial Number</th>
+    <th>Issues</th>
+    <th>Requests</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let equipment of equipmentList">
+    <td>{{ equipment.name }}</td>
+    <td>{{ equipment.description }}</td>
+    <td>{{ equipment.modelNumber }}</td>
+    <td>{{ equipment.serialNumber }}</td>
+    <td><app-colored-square [quantity]="equipment.issues.length" [status]="'danger'"></app-colored-square></td>
+    <td><app-colored-square [quantity]="equipment.requests.length" [status]="'warning'"></app-colored-square></td>
+  </tr>
+  </tbody>
+</table>
+

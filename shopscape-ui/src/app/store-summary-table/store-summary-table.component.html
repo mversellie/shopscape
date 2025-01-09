@@ -1,7 +1,10 @@
-<table>
-  <tr *ngFor="let summary of summaries">
-    <td><a [routerLink]="'/stores/' + summary.ID">{{ summary.Name }}</a></td>
-    <td>{{ summary.RequestCount }}</td>
-    <td>{{ summary.IssueCount }}</td>
-  </tr>
-</table>
+<div class="row" *ngFor="let summary of summaries">
+    <div class="col-4"><a [routerLink]="'/stores/' + summary.ID">{{ summary.Name }}</a></div>
+    <div class="col-2"></div>
+    <div class="col-3"><div *ngIf="(summary.RequestCount == 0)"><a [routerLink]="'/stores/' + summary.ID" class="btn-sm btn-warning btn-circle">
+      {{ summary.RequestCount }}
+    </a>  Requests</div></div>
+    <div class="col-3"><div *ngIf="(summary.IssueCount == 0)"><a [routerLink]="'/stores/' + summary.ID" class="btn-sm btn-danger btn-circle">
+      {{ summary.IssueCount }}
+    </a>  Issues</div></div>
+</div>

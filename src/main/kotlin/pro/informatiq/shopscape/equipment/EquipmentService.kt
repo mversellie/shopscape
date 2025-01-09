@@ -47,8 +47,6 @@ class EquipmentService(
         equipmentRelationshipRepository.save(newRelationship)
     }
 
-
-
     fun getEquipmentForStore(storeId: UUID): MutableList<Equipment> {
         val equipmentEntitiesMap = equipmentRepository.findByStore(storeId)
         val equipmentIds = equipmentEntitiesMap.map { it.id }

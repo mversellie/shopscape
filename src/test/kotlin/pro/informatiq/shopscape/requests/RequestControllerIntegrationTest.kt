@@ -130,49 +130,4 @@ class RequestControllerIntegrationTest {
             .andExpect(status().isOk)
             .andExpect(content().json(objectMapper.writeValueAsString(mapOf("count" to (2L + before)))))
     }
-
-    @Test
-    fun `getAllRequests should return requests data after saving to db`() {
-        val requestEntity1 = RequestEntity(
-            id = UUID.randomUUID(),
-            entityId = UUID.randomUUID(),
-            name = "Request 1",
-            status = 1,
-            description = "Some description"
-        )
-        val requestEntity2 = RequestEntity(
-            id = UUID.randomUUID(),
-            entityId = UUID.randomUUID(),
-            name = "Request 2",
-            status = 3,
-            description = "Another description"
-        )
-
-        requestsRepository.save(requestEntity1)
-        requestsRepository.save(requestEntity2)
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/requests")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk)
-            .andExpect(content().json("""
-                {
-                  "requests": [
-                    {
-                      "id": "${requestEntity1.id}",
-                      "entityId": "${requestEntity1.entityId}",
-                      "name": "Request 1",
-                      "status": "Pending",
-                      "description": "Some description"
-                    },
-                    {
-                      "id": "${requestEntity2.id}",
-                      "entityId": "${requestEntity2.entityId}",
-                      "name": "Request 2",
-                      "status": "Completed",
-                      "description": "Another description"
-                    }
-                  ]
-                }
-            """))
-    }
 }

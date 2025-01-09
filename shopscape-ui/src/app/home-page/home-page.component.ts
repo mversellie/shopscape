@@ -27,15 +27,13 @@ export class HomePageComponent implements OnInit {
   issuesCount: number = 0;
   requests: ShopScapeRequest[] = [];
   issues: ShopScapeIssue[] = [];
-  storeSummaries:StoreSummary[] = []
 
-  constructor(private requestService: RequestService, private issueService: IssueService,private storeService:ShopService) {
+  constructor(private requestService: RequestService, private issueService: IssueService, protected storeService:ShopService) {
   }
 
   ngOnInit(): void {
     this.fetchCounts();
     this.fetchIssuesAndRequests()
-    this.storeSummaries = this.storeService.storeSummaries
     this.storeService.getShops()
   }
 

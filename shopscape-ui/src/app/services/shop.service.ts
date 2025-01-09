@@ -1,14 +1,18 @@
-import { Injectable } from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 import { NetworkService } from './network.service';
 import {ShopScapeStore, StoreSummary} from '../data/Entities';
 import {environment} from '../../environments/environment';
+import {ShopScapeIssue} from '../data/ShopScapeIssue';
+import {ShopScapeRequest} from '../data/ShopScapeRequest';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShopService {
-  shopData: ShopScapeStore[] = [];
-  storeSummaries:StoreSummary[] = [];
+  shopData: WritableSignal<ShopScapeStore[]> = signal([]);
+  storeSummaries:WritableSignal<StoreSummary[]> = signal([]);
+  requests:WritableSignal<ShopScapeRequest[]> = signal([]);
+  issues:WritableSignal<ShopScapeIssue[]> = signal([]);
 
 
   constructor(private networkService: NetworkService) {
@@ -19,9 +23,10 @@ export class ShopService {
     // @ts-ignore
     const response = await this.networkService.get(environment["api-url"] + '/api/stores');
     const data = await response.json();
-    this.shopData = data["stores"];
-    console.log(this.shopData)
-    this.shopData.forEach(thing => this.storeSummaries.push(this.summarizeStore(thing)))
+    this.shopData.set(data["stores"]);
+    const tempSummaries:StoreSummary[] = []
+    this.shopData().forEach(thing => tempSummaries.push(this.summarizeStore(thing)))
+    this.storeSummaries.set(tempSummaries)
   }
 
   summarizeStore(store: ShopScapeStore):StoreSummary{
@@ -42,5 +47,17 @@ export class ShopService {
     const response = await this.networkService.get(environment["api-url"] + `/api/stores/${id}`);
     const data = await response.json();
     return data;
+  }
+
+  flattenAllRequestsForStore(store: ShopScapeStore){
+    let requests = store.requests;
+    store.equipment.forEach(equip => { requests.push(... equip.requests); });
+    return requests;
+  }
+
+  flattenAllIssuesForStore(store: ShopScapeStore){
+    let issues = store.issues;
+    store.equipment.forEach(equip => { issues.push(... equip.issues); });
+    return issues;
   }
 }

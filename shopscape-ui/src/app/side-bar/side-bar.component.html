@@ -24,32 +24,10 @@
 
   <!-- Heading -->
   <div class="sidebar-heading">
-    Overviews
-  </div>
-
-  <li class="nav-item">
-    <a class="nav-link" href="#">
-      <i class="fas fa-fw fa-cog"></i>
-      <span>Requests</span>
-    </a>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link" href="#" >
-      <i class="fas fa-fw fa-wrench"></i>
-      <span>Issues</span>
-    </a>
-  </li>
-
-  <!-- Divider -->
-  <hr class="sidebar-divider">
-
-  <!-- Heading -->
-  <div class="sidebar-heading">
     Locations
   </div>
 
-  <li class="nav-item" *ngFor="let store of storeSummaries">
+  <li class="nav-item" *ngFor="let store of storeService.storeSummaries()">
     <a class="nav-link" routerLink="{{'/stores/' + store.ID}}">
       <i class="fas fa-fw fa-chart-area"></i>
       <span>{{store.Name}}</span></a>

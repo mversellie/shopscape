@@ -22,11 +22,10 @@ databaseChangeLog:
                   name: phone_number
                   type: VARCHAR(20)
               - column:
-                  primaryKey: true
                   name: entity_id
                   type: UUID
                   constraints:
-                    nullable: false
+                    primaryKey: true
                     foreignKey:
                       tableName: entities
                       columnName: id
@@ -51,7 +50,6 @@ databaseChangeLog:
                   type: UUID
                   constraints:
                     primaryKey: true
-                    nullable: true
                     foreignKey:
                       tableName: entities
                       columnName: id

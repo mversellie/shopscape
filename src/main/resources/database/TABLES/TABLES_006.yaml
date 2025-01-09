@@ -36,18 +36,22 @@ databaseChangeLog:
       changes:
         - addColumn:
             tableName: requests
-            columnName: status
-            type: INT
-            constraints:
-              nullable: false
-              foreignKey:
-                tableName: requests_types
-                columnName: id
+            columns:
+              - column:
+                  name: status
+                  type: INT
+                  constraints:
+                    nullable: false
+                    foreignKey:
+                      tableName: requests_types
+                      columnName: id
         - addColumn:
             tableName: issues
-            columnName: status
-            type: INT
-            constraints:
-              nullable: false
-              foreignKey:
-                tableName: issues_types
+            columns:
+             - column:
+                name: status
+                type: INT
+                constraints:
+                  nullable: false
+                  foreignKey:
+                    tableName: issues_types

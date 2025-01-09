@@ -4,20 +4,37 @@
 
 <div class="row">
 
-  <div class="col-lg-6 mb-4 sm-4">
+  <div class="col-lg-3 mb-4 sm-4">
 
     <div class="card shadow mb-4">
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Locations</h6>
       </div>
       <div class="card-body">
-        {{store.name}}
+        <h3>{{store.name}}</h3>
+        <div>{{store.streetAddress}}</div>
+        <div>{{store.city}} {{store.state}}, {{store.zipCode}}</div>
+        <div>{{store.phoneNumber}}</div>
       </div>
     </div>
 
   </div>
-  <div class="col-lg-6 col-md-6">
+  <div class="col-lg-1"></div>
+  <div class="col-lg-8 col-md-6">
+
     <div class="row ">
+      <div class="col-12">
+
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Equipment</h6>
+          </div>
+          <div class="card-body">
+
+            <app-equipment-table [equipmentList]="equipment" />
+          </div></div>
+
+      </div>
       <div class="col-lg-6 mb-4 col-md-6">
 
         <div class="card shadow mb-4">

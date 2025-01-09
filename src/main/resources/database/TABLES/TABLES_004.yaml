@@ -5,8 +5,10 @@ databaseChangeLog:
       changes:
         - addColumn:
             tableName: entities
-            columnName: entity_type_id
-            type: INT
+            columns:
+             - column:
+                name: entity_type_id
+                type: INT
         - addForeignKeyConstraint:
             baseTableName: entities
             constraintName: FK_entities_entity_type
