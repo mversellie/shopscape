@@ -14,6 +14,7 @@ services:
     restart: always
     ports:
       - '5432:5432'
+    ## Remember to make a .env file for this to work or set VARS
     environment:
       POSTGRES_PASSWORD: ${SHOP_SCAPE_DB_PASSWORD}
     volumes:

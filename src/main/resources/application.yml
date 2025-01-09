@@ -1,1 +1,13 @@
-spring.application.name=Shop-scape
+spring:
+  application:
+    name: Shop-scape
+  datasource:
+    password: ""
+    username: ""
+    url: ""
+    driver-class-name: ""
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8080

@@ -12,9 +12,10 @@ interface EquipmentRepository : JpaRepository<EquipmentEntity, UUID> {
     fun findBySerialNumber(serialNumber: String): EquipmentEntity?
 
     @Query(
-        value = "SELECT new pro.informatiq.shopscape.data.Equipment(e.serialNumber,e.description,e.modelNumber,e.entityId,me.name,null,null)  FROM EquipmentEntity e " +
+        value = "SELECT new pro.informatiq.shopscape.data.Equipment(e.serialNumber,e.description,e.modelNumber,e.entityId,equipmentMainEntity.name,null,null)  FROM EquipmentEntity e " +
                 "JOIN EquipmentRelationshipEntity er ON e.entityId = er.equipment " +
-                "JOIN MainEntity me ON er.store = me.id " +
+                "JOIN MainEntity storeEntity ON er.store = storeEntity.id " +
+                "Join MainEntity equipmentMainEntity on e.entityId = equipmentMainEntity.id " +
                 "WHERE er.store= :storeId",
     )
     fun findByStore(storeId: UUID): MutableList<Equipment>

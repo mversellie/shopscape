@@ -13,7 +13,7 @@ interface IssueRepository : JpaRepository<IssueEntity, UUID> {
     @Query(
         value = "SELECT new pro.informatiq.shopscape.data.Issue(i.id, i.name, i.description, i.entityId, it.name) " +
                 "FROM IssueEntity i " +
-                "JOIN IssueTypeEntity it WHERE i.status = it.id"
+                "JOIN IssueTypeEntity it ON i.status = it.id"
     )
     fun findAllIssuesWithTypes(): List<Issue>
 

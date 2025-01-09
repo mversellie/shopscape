@@ -32,3 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 .continue
+
+AI-context.txt
+linux-demo/.env
+/liquibase.properties
+
+src/main/resources/application-*.yml

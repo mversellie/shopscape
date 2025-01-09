@@ -3,6 +3,7 @@ services:
     image: postgres:16
     volumes:
       - postgres_shop_scape:/var/lib/postgresql/data
+    ## Remember to make a .env file for this to work or set VARS
     environment:
       POSTGRES_DB: ${SHOP_SCAPE_DB_NAME}
       POSTGRES_USER: ${SHOP_SCAPE_DB_USERNAME}
